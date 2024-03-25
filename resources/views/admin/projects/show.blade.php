@@ -4,8 +4,14 @@
 
 @section('content')
 
-<header>
-    <h1 class="pb-4 mb-4 border-bottom">{{ $project->title }}</h1>
+<header class="border-bottom">
+    <h1 class="mt-4 mb-1">{{ $project->title }}</h1>
+    <p>Type: @if ($project->type)
+        <span class="badge align-middle" style="background-color: {{ $project->type->color }}">{{ $project->type->label }}</span>
+        @else
+            Nothing
+        @endif
+    </p>
 </header>
 
 <div class="clearfix pb-4 border-bottom">

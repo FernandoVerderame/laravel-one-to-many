@@ -45,7 +45,12 @@
             <th scope="row">{{ $project->id }}</th>
             <td>{{ $project->title }}</td>
             <td>{{ $project->slug }}</td>
-            <td>{{ $project->type ? $project->type->label : '-'}}</td>
+            <td>@if ($project->type)
+                    <span class="badge align-middle" style="background-color: {{ $project->type->color }}">{{ $project->type->label }}</span>
+                @else
+                    Nothing
+                @endif
+            </td>
             <td>
                 <form action="{{ route('admin.projects.complete', $project->id) }}" method="POST" class="completion-form">
                     @csrf
