@@ -25,6 +25,7 @@
             <th scope="col">#</th>
             <th scope="col">Title</th>
             <th scope="col">Slug</th>
+            <th scope="col">Type</th>
             <th scope="col">Completed</th>
             <th scope="col">Created</th>
             <th scope="col">Updated</th>
@@ -44,6 +45,7 @@
             <th scope="row">{{ $project->id }}</th>
             <td>{{ $project->title }}</td>
             <td>{{ $project->slug }}</td>
+            <td>{{ $project->type ? $project->type->label : '-'}}</td>
             <td>
                 <form action="{{ route('admin.projects.complete', $project->id) }}" method="POST" class="completion-form">
                     @csrf
@@ -74,7 +76,7 @@
 
         @empty 
             <tr>
-                <td colspan="7">
+                <td colspan="8">
                     <h3>There aren't any projects.</h3>
                 </td>
             </tr>
