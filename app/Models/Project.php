@@ -24,4 +24,9 @@ class Project extends Model
     {
         return Vite::asset('public/storage/' . $this->image);
     }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
 }
