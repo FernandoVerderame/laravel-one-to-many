@@ -9,10 +9,16 @@
 
     <form action="{{ route('admin.projects.index') }}" method="GET">
         <div class="input-group">
-            <select class="form-select" name="filter">
-                <option value="">All</option>
-                <option value="completed" @if($filter === 'completed') selected @endif>Completed</option>
-                <option value="drafts" @if($filter === 'drafts') selected @endif>Work in progress</option>
+            <select class="form-select" name="type_filter">
+                <option value="">Type</option>
+                @foreach ($types as $type)
+                    <option value="{{ $type->id }}" @if($type_filter == $type->id) selected @endif>{{ $type->label }}</option>
+                @endforeach
+            </select>
+            <select class="form-select" name="completed_filter">
+                <option value="">Status</option>
+                <option value="completed" @if($completed_filter === 'completed') selected @endif>Completed</option>
+                <option value="drafts" @if($completed_filter === 'drafts') selected @endif>Work in progress</option>
             </select>
             <button class="btn btn-outline-secondary" type="submit"><i class="fa-solid fa-filter me-2"></i>Status</button>
         </div>
@@ -26,7 +32,7 @@
             <th scope="col">Title</th>
             <th scope="col">Slug</th>
             <th scope="col">Type</th>
-            <th scope="col">Completed</th>
+            <th scope="col">Status</th>
             <th scope="col">Created</th>
             <th scope="col">Updated</th>
             <th>
@@ -82,7 +88,7 @@
         @empty 
             <tr>
                 <td colspan="8">
-                    <h3>There aren't any projects.</h3>
+                    <h3 class="text-center">There aren't any projects.</h3>
                 </td>
             </tr>
         @endforelse

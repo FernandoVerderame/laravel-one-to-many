@@ -18,18 +18,19 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = $request->query('filter');
+        $completed_filter = $request->query('completed_filter');
+        $type_filter = $request->query('type_filter');
 
-        $query = Project::orderByDesc('updated_at')->orderByDesc('created_at');
+        $projects = Project::complete($completed_filter)
+            ->type($type_filter)
+            ->orderByDesc('updated_at')
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->withQueryString();
 
-        if ($filter) {
-            $value = $filter === 'completed';
-            $query->whereIsCompleted($value);
-        }
+        $types = Type::all();
 
-        $projects = $query->paginate(10)->withQueryString();
-
-        return view('admin.projects.index', compact('projects', 'filter'));
+        return view('admin.projects.index', compact('projects', 'types', 'completed_filter', 'type_filter'));
     }
 
     /**

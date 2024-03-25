@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Vite;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,5 +29,20 @@ class Project extends Model
     public function type()
     {
         return $this->belongsTo(Type::class);
+    }
+
+    // Query Scope
+    public function scopeComplete(Builder $query, $status)
+    {
+        if (!$status) return $query;
+        $value = $status === 'completed';
+        return $query->whereIsCompleted($value);
+    }
+
+    // Query Scope
+    public function scopeType(Builder $query, $type_id)
+    {
+        if (!$type_id) return $query;
+        return $query->whereTypeId($type_id);
     }
 }
