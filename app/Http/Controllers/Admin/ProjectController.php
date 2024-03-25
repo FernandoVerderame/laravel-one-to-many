@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Type;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -37,8 +38,9 @@ class ProjectController extends Controller
     public function create()
     {
         $project = new Project();
+        $types = Type::select('label', 'id')->get();
 
-        return view('admin.projects.create', compact('project'));
+        return view('admin.projects.create', compact('project', 'types'));
     }
 
     /**
@@ -50,7 +52,8 @@ class ProjectController extends Controller
             'title' => 'required|string|min:5|max:50|unique:projects',
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:png,jpg,jpeg',
-            'is_completed' => 'nullable|boolean'
+            'is_completed' => 'nullable|boolean',
+            'type_id' => 'nullable|exists:types,id'
         ], [
             'title.required' => 'Title must be mandatory',
             'title.min' => 'Title must be at least :min characters',
@@ -59,7 +62,8 @@ class ProjectController extends Controller
             'image.image' => 'The added file is not an image',
             'image.mimes' => 'Valid extensions are .png, .jpg, .jpeg',
             'is_completed.boolean' => 'The value of the completed field is invalid',
-            'description.required' => 'Description must be mandatory'
+            'description.required' => 'Description must be mandatory',
+            'type_id.exists' => 'Invalid or non-existent category'
         ]);
 
         $data = $request->all();
@@ -97,7 +101,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $types = Type::select('label', 'id')->get();
+
+        return view('admin.projects.edit', compact('project', 'types'));
     }
 
     /**
@@ -109,7 +115,8 @@ class ProjectController extends Controller
             'title' => ['required', 'string', 'min:5', 'max:50', Rule::unique('projects')->ignore($project->id)],
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:png,jpg,jpeg',
-            'is_completed' => 'nullable|boolean'
+            'is_completed' => 'nullable|boolean',
+            'type_id' => 'nullable|exists:types,id'
         ], [
             'title.required' => 'Title must be mandatory',
             'title.min' => 'Title must be at least :min characters',
@@ -118,7 +125,8 @@ class ProjectController extends Controller
             'image.image' => 'The added file is not an image',
             'image.mimes' => 'Valid extensions are .png, .jpg, .jpeg',
             'is_completed.boolean' => 'The value of the completed field is invalid',
-            'description.required' => 'Description must be mandatory'
+            'description.required' => 'Description must be mandatory',
+            'type_id.exists' => 'Invalid or non-existent category'
         ]);
 
         $data = $request->all();
