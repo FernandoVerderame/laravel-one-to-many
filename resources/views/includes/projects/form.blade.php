@@ -14,13 +14,13 @@
                 <label for="title" class="form-label h3">Title</label>
                 <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @elseif(old('title', '')) is-valid @enderror" placeholder="Ex.: Laravel DC Comics" value="{{ old('title', $project->title) }}" required>
                 @error('title')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                 @else 
-                <div class="form-text">
-                    Add project's title
-                </div>
+                    <div class="form-text">
+                        Add project's title
+                    </div>
                 @enderror
             </div>
         </div>
@@ -37,18 +37,35 @@
                 <label for="description" class="form-label h3">Description</label>
                 <textarea type="text" name="description" id="description" class="form-control @error('description') is-invalid @elseif(old('description', '')) is-valid @enderror" placeholder="Project description..." rows="10" required>{{ old('description', $project->description) }}</textarea>
                 @error('description')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                 @else 
-                <div class="form-text">
-                    Add project's description
-                </div>
+                    <div class="form-text">
+                        Add project's description
+                    </div>
                 @enderror
             </div>
         </div>
 
-        <div class="col-10">
+        <div class="col-4">
+            <div class="mb-4">
+                <label for="type_id" class="form-label h3">Type Select</label>
+                <select name="type_id" id="type_id" class="form-select @error('type_id') is-invalid @elseif(old('type_id', '')) is-valid @enderror">
+                    <option value="">Nothing</option>
+                    @foreach ($types as $type)
+                        <option value="{{ $type->id }}" @if(old('type_id', $project->type?->id) == $type->id) selected @endif>{{ $type->label }}</option>
+                    @endforeach
+                </select>
+                @error('type_id')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="col-6">
             <div class="mb-4">
                 <label for="image" class="form-label h3">URL Image</label>
 
@@ -60,16 +77,17 @@
                 <input type="file" name="image" id="image" class="form-control @if($project->image) d-none @endif @error('image') is-invalid @elseif(old('image', '')) is-valid @enderror" placeholder="Ex.: https:://...">
                 
                 @error('image')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                 @else 
-                <div class="form-text">
-                    Upload image file
-                </div>
+                    <div class="form-text">
+                        Upload image file
+                    </div>
                 @enderror
             </div>
         </div>
+
         <div class="col-1  d-flex align-items-center">
             <div class="">
                 <img src="{{ old('image', $project->image) 
@@ -77,6 +95,7 @@
                 : 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=' }}" class="img-fluid" alt="{{ $project->image ? $project->title : 'preview' }}" id="preview">
             </div>
         </div>
+
         <div class="col-1 d-flex align-items-center">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="is_completed" name="is_completed" value="1" @if(old('is_completed', $project->is_completed)) checked @endif>
