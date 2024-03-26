@@ -21,8 +21,8 @@ class ProjectController extends Controller
         $completed_filter = $request->query('completed_filter');
         $type_filter = $request->query('type_filter');
 
-        $projects = Project::complete($completed_filter)
-            ->type($type_filter)
+        $projects = Project::typeFilter($type_filter)
+            ->completeFilter($completed_filter)
             ->orderByDesc('updated_at')
             ->orderByDesc('created_at')
             ->paginate(10)

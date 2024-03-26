@@ -32,7 +32,7 @@ class Project extends Model
     }
 
     // Query Scope
-    public function scopeComplete(Builder $query, $status)
+    public function scopeCompleteFilter(Builder $query, $status)
     {
         if (!$status) return $query;
         $value = $status === 'completed';
@@ -40,7 +40,7 @@ class Project extends Model
     }
 
     // Query Scope
-    public function scopeType(Builder $query, $type_id)
+    public function scopeTypeFilter(Builder $query, $type_id)
     {
         if (!$type_id) return $query;
         return $query->whereTypeId($type_id);
