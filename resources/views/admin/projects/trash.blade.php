@@ -16,6 +16,7 @@
             <th scope="col">#</th>
             <th scope="col">Title</th>
             <th scope="col">Slug</th>
+            <th scope="col">Type</th>
             <th scope="col">Status</th>
             <th scope="col">Created</th>
             <th scope="col">Updated</th>
@@ -35,6 +36,13 @@
             <th scope="row">{{ $project->id }}</th>
             <td>{{ $project->title }}</td>
             <td>{{ $project->slug }}</td>
+            <td>
+                @if ($project->type)
+                    <span class="badge align-middle" style="background-color: {{ $project->type->color }}">{{ $project->type->label }}</span>
+                @else
+                    Nothing
+                @endif
+            </td>
             <td>{{ $project->is_completed ? 'Completed' : 'Work in progress' }}</td>
             <td>{{ $project->created_at }}</td>
             <td>{{ $project->updated_at }}</td>
@@ -62,7 +70,7 @@
 
         @empty 
             <tr>
-                <td colspan="7">
+                <td colspan="8">
                     <h3 class="text-center">There aren't any projects.</h3>
                 </td>
             </tr>
